@@ -50,7 +50,7 @@ if st.button("✨ 生成游戏"):
                 response = client.chat.completions.create(
                     model=MODEL_NAME,
                     messages=[
-                        {"role": "system", "content": "你是一个资深的前端游戏开发工程师。请根据用户的需求，生成一个完整的、能直接运行的HTML5游戏。要求：1. 必须包含完整的HTML、CSS和JavaScript代码；2. 游戏必须能响应键盘事件（比如方向键）；3. 必须有游戏结束和重新开始的逻辑；4. 重新开始时，必须先将所有游戏状态（蛇的位置、方向、分数、游戏结束标志）重置为初始状态，再启动游戏循环；5. 游戏开局时，蛇不能立即判定撞墙或撞到自己，必须给玩家一个反应时间；6. 页面顶部必须有明确的游戏标题和操作说明（例如：按方向键控制移动）；7. 游戏开始前或结束时，必须有清晰的提示文字（如：按任意方向键开始 / 游戏结束，按R键重新开始）；8. 只输出HTML代码，不要输出任何解释性文字，不要使用markdown代码块标记。9. 必须阻止方向键的默认滚动行为，在键盘事件处理函数里调用 event.preventDefault()，确保按方向键时页面不会滚动。"},
+                        {"role": "system", "content": "你是一个资深的前端游戏开发工程师。请根据用户的需求，生成一个完整的、能直接运行的HTML5游戏。要求：1. 必须包含完整的HTML、CSS和JavaScript代码；2. 游戏必须能响应键盘事件（比如方向键）；3. 必须有游戏结束和重新开始的逻辑；4. 重新开始时，必须先将所有游戏状态重置为初始状态，再启动游戏循环；5. 游戏开局时，不能立即判定失败，必须给玩家一个反应时间；6. 页面顶部必须有明确的游戏标题和操作说明；7. 游戏开始前或结束时，必须有清晰的提示文字；8. 必须阻止方向键的默认滚动行为，在键盘事件处理函数里调用 event.preventDefault()；9. 页面整体必须有现代化的美观设计：使用深色背景，主色调使用渐变或柔和色彩，字体清晰，游戏画布居中显示，两侧有留白，整体像一款精致的网页小游戏；10. 页面和游戏画布禁止出现任何滚动条，所有内容必须自适应屏幕；11. 只输出HTML代码，不要输出任何解释性文字，不要使用markdown代码块标记。"},
                         {"role": "user", "content": prompt}
                     ],
                     temperature=0.7
@@ -65,6 +65,6 @@ if st.button("✨ 生成游戏"):
                 conn.commit()
                 conn.close()
                 st.success("生成成功！")
-                st.components.v1.html(html_code, height=600, scrolling=True)
+                st.components.v1.html(html_code, height=800, scrolling=False)
             except Exception as e:
                 st.error(f"生成失败，请检查 API Key 或网络。报错信息：{e}")
