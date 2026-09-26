@@ -195,6 +195,8 @@ GAME_SHELL = """<!DOCTYPE html>
       restartBtn.disabled = false;
       frame.onload = focusGame;
       frame.srcdoc = GAME_HTML;
+      // 兼容处理：srcdoc 在某些浏览器不触发 onload，延迟手动调用一次
+      setTimeout(focusGame, 300);
     }
 
     startBtn.addEventListener("click", loadGame);
@@ -249,9 +251,12 @@ def wrap_game_html(html_code: str) -> str:
     if 'id="atoms-game-shell"' in html_code:
         return html_code
     inner = inject_focus_script(html_code)
+    # 用 json.dumps 进行安全转义，避免出现裸露的 \n 和 \uXXXX
+    inner_json = json.dumps(inner)
+    title_json = json.dumps(extract_game_title(inner))
     return (
-        GAME_SHELL.replace("__GAME_HTML__", json.dumps(inner))
-        .replace("__GAME_TITLE__", json.dumps(extract_game_title(inner)))
+        GAME_SHELL.replace("__GAME_HTML__", inner_json)
+        .replace("__GAME_TITLE__", title_json)
     )
 
 
